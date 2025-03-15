@@ -1,38 +1,35 @@
 const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
 const cors = require('cors');
+const { kv } = require('@vercel/kv');
 
 const app = express();
 
-// Configure CORS to allow requests from Vite's dev server (port 5173)
 app.use(cors());
-
 app.use(express.json());
-
-const DB_PATH = path.join(__dirname, 'database.json');
 
 // Get reservations
 app.get('/reservations', async (req, res) => {
     try {
-        const data = await fs.readFile(DB_PATH, 'utf8');
-        res.json(JSON.parse(data));
+        const data = await kv.get('reservations');
+        res.json(data || []);
     } catch (error) {
-        // If file doesn't exist or is empty, return empty array
+        console.error('Error fetching reservations:', error);
         res.json([]);
     }
 });
 
+// Root endpoint
 app.get("/", async (req, res) => {
-    res.send("This API in running")
-})
+    res.send("This API is running");
+});
 
 // Save reservations
 app.post('/reservations', async (req, res) => {
     try {
-        await fs.writeFile(DB_PATH, JSON.stringify(req.body, null, 2));
+        await kv.set('reservations', req.body);
         res.json({ success: true });
     } catch (error) {
+        console.error('Error saving reservations:', error);
         res.status(500).json({ error: 'Failed to save reservations' });
     }
 });
