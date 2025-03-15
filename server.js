@@ -23,6 +23,10 @@ app.get('/reservations', async (req, res) => {
     }
 });
 
+app.get("/", async (req, res) => {
+    res.return("API IS RUNNING")
+})
+
 // Save reservations
 app.post('/reservations', async (req, res) => {
     try {
