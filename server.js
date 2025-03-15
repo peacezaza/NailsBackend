@@ -6,11 +6,7 @@ const cors = require('cors');
 const app = express();
 
 // Configure CORS to allow requests from Vite's dev server (port 5173)
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 
@@ -38,3 +34,5 @@ app.post('/reservations', async (req, res) => {
 });
 
 app.listen(3001, () => console.log('Server running on port 3001'));
+
+module.exports = app;
