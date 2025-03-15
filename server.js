@@ -24,7 +24,7 @@ app.get('/reservations', async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-    res.return("API IS RUNNING")
+    res.send("This API in running")
 })
 
 // Save reservations
