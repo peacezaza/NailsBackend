@@ -17,8 +17,10 @@ const DB_PATH = path.join(__dirname, 'database.json');
 app.get('/reservations', async (req, res) => {
     try {
         const data = await fs.readFile(DB_PATH, 'utf8');
+        console.log("Get Data SuccessFully")
         res.json(JSON.parse(data));
     } catch (error) {
+        console.log("File doesn't exist");
         // If file doesn't exist or is empty, return empty array
         res.json([]);
     }
@@ -32,8 +34,10 @@ app.get("/", async (req, res) => {
 app.post('/reservations', async (req, res) => {
     try {
         await fs.writeFile(DB_PATH, JSON.stringify(req.body, null, 2));
+        console.log("Added Data Successfully")
         res.json({ success: true });
     } catch (error) {
+        console.log("Failed to write data")
         res.status(500).json({ error: 'Failed to save reservations' });
     }
 });
